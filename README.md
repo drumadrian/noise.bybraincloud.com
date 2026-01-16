@@ -150,7 +150,8 @@ The structured thesis and dissertation content lives here:
 ➡️ [thesisREADME.md](./thesisREADME.md)
 
 ```
-
+GitHub Link to thesisREADME.md:
+➡️ [thesisREADME.md](https://github.com/drumadrian/noise.bybraincloud.com/blob/main/thesis/thesisREADME.md)
 
 
 ---
