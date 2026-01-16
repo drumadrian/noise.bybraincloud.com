@@ -50,8 +50,7 @@ The goal is to lock down **what is being studied and why**, before writing prose
 # Adrian’s Thesis & Dissertation Video 🎥
 
 ## Thesis & Dissertation Overview
-[![Thesis & Dissertation Overview](https://img.youtube.com/vi/tbs/0.jpg)](https://www.youtube.com/watch?v=tbs)
-
+[![Thesis & Dissertation Overview](https://img.youtube.com/vi/y9KVtAIIYWw/0.jpg)](https://www.youtube.com/watch?v=y9KVtAIIYWw)
 
 ---
 
