@@ -88,7 +88,7 @@ User=ec2-user
 WorkingDirectory=$SERVER_DIR
 ExecStart=/usr/bin/node server.js
 Restart=on-failure
-Environment=PORT=3001
+Environment=API_PORT=3001
 Environment=NODE_ENV=production
 
 [Install]

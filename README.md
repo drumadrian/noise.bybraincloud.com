@@ -80,6 +80,18 @@ Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
 
 
 
+## Local Development Setup: 
+
+1. Clone the repository:
+`git clone https://github.com/drumadrian/noise.bybraincloud.com.git`
+`cd noise.bybraincloud.com`
+
+2. Install dependencies:
+`npm install`
+
+3. Run the server:
+`npm start`
+
 
 
 
