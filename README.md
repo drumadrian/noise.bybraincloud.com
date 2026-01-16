@@ -26,6 +26,14 @@ Visit here:  ![noise.bybraincloud.com](https://noise.bybraincloud.com)
 
 
 
+## Check for GPU 
+
+
+![nvidia-smi.png](nvidia-smi.png)
+
+
+
+
 ## Architecture Diagram from Cloudcraft:
 
 

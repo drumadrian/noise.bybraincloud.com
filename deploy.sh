@@ -43,6 +43,14 @@ fetch_code() {
     fi
 }
 
+install_postgres() {
+    log_status "Installing Postgres"
+    sudo yum install -y postgresql-server
+    sudo systemctl enable postgresql
+    sudo systemctl start postgresql
+}
+
+
 setup_db() {
     log_status "Setting up Database"
     cd "$SERVER_DIR"
@@ -126,6 +134,11 @@ install_opensearch_dashboards() {
     
     sudo systemctl enable opensearch-dashboards
     sudo systemctl start opensearch-dashboards
+}
+
+check_nvidia_smi() {
+    log_status "Checking nvidia-smi"
+    nvidia-smi
 }
 
 install_ollama() {
@@ -237,12 +250,14 @@ start_httpd() {
 update_os
 install_node
 fetch_code
+install_postgres
 setup_db
 install_dependencies
 build_app
 install_httpd
 install_opensearch
 install_opensearch_dashboards
+check_nvidia_smi
 install_ollama
 install_neo4j
 install_weaviate
