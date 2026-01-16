@@ -99,28 +99,18 @@ instance type: t3.medium
 EBS storage: 100GB
 
 
-Check Postgres  
-`sudo systemctl status postgresql`
 
 
-We have a postgresql database running on port 5432
+Install the full stack:
 
-```
-host: localhost
-port: 5432
-user: wikijs
-pass: wikijsrocks
-db: noise
-  ssl: false
-```
+1. Clone the repository:
+`git clone https://github.com/drumadrian/noise.bybraincloud.com.git`
+`cd noise.bybraincloud.com`
 
+2. Setup permission for the deploy script:
+`chmod +x deploy.sh`
 
- 
-
-
-
-
-Install the full stack(copy the deploy.sh file to the EC2 instance and run it):  
+3. Run the deploy script:
 `./deploy.sh`
 
 
