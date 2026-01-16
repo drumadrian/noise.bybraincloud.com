@@ -52,10 +52,11 @@ Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
 
 
 
-## Screenshot 
+## Screenshots 
 
+![screenshot1](screenshot1.png)
 
-![screenshot.png](screenshot.png)
+![screenshot2](screenshot2.png)
 
 
 Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
