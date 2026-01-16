@@ -52,10 +52,11 @@ Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
 
 
 
-## Screenshot 
+## Screenshots 
 
+![screenshot1](screenshot1.png)
 
-![screenshot.png](screenshot.png)
+![screenshot2](screenshot2.png)
 
 
 Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
@@ -66,9 +67,6 @@ Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
 
 
 ![amiandtype.png](amiandtype.png)
-
-
-amiandtype.png
 
 
 
@@ -82,6 +80,22 @@ amiandtype.png
 
 
 
+
+## Local Development Setup: 
+
+1. Clone the repository:
+`git clone https://github.com/drumadrian/noise.bybraincloud.com.git`
+`cd noise.bybraincloud.com`
+
+
+2. Install dependencies:
+`npm install`
+
+3. Set up environment variables:
+`cp .env.example .env`
+
+4. Run the server:
+`npm run dev`
 
 
 
@@ -114,10 +128,28 @@ Install the full stack:
 `./deploy.sh`
 
 
+---
+
+# 🎥 Comparing Search Methods: OpenSearch, Weaviate, and Neo4j for Low-Noise RAG 🎥
+
+## Welcome Video
+[![Project Overview](https://img.youtube.com/vi/faSx8Qbn7VA/0.jpg)](https://www.youtube.com/watch?v=faSx8Qbn7VA)
+
+
+---
 
 
 
+## 📄 Thesis & Dissertation Text *(structured, not written)*
 
+```markdown
+## 📄 Full Thesis & Dissertation
+
+The structured thesis and dissertation content lives here:
+
+➡️ [thesisREADME.md](./thesisREADME.md)
+
+```
 
 
 

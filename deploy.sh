@@ -60,6 +60,34 @@ fetch_code() {
     fi
 }
 
+generate_env_file() {
+    log_status "Generating .env file"
+    
+    # We use the known defaults set up by this script
+    cat > "$SERVER_DIR/.env" <<EOF
+API_PORT=3001
+NODE_ENV=production
+
+# Postgres (Credentials from create-database-noise.sh / install_postgres)
+PG_USER=wikijs
+PG_HOST=localhost
+PG_DATABASE=noise
+PG_PASSWORD=wikijsrocks
+PG_PORT=5432
+
+# Neo4j (Default credential)
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=password
+
+# OpenSearch
+OPENSEARCH_NODE=http://localhost:9200
+EOF
+    
+    # Set permissions
+    chmod 600 "$SERVER_DIR/.env"
+}
+
 install_dependencies() {
     log_status "Installing Node Dependencies"
     cd "$SERVER_DIR"
@@ -70,6 +98,34 @@ build_app() {
     log_status "Building React App"
     cd "$SERVER_DIR"
     npm run build
+}
+
+
+install_node_service() {
+    log_status "Installing Node.js Backend Service"
+    
+    # Create systemd service for the node app
+    sudo tee /etc/systemd/system/noise-backend.service > /dev/null <<EOF
+[Unit]
+Description=Noise Backend Server
+After=network.target postgresql.service opensearch.service
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=$SERVER_DIR
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+Environment=API_PORT=3001
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable noise-backend
+    sudo systemctl restart noise-backend
 }
 
 install_httpd() {
@@ -89,6 +145,14 @@ install_httpd() {
 <VirtualHost *:80>
     ServerAdmin webmaster@noise.bybraincloud.com
     DocumentRoot $BUILD_DIR
+
+    ProxyRequests Off
+    ProxyPreserveHost On
+    
+    <Location /api>
+        ProxyPass http://localhost:3001/api
+        ProxyPassReverse http://localhost:3001/api
+    </Location>
 
     <Directory "$BUILD_DIR">
         Options Indexes FollowSymLinks
@@ -339,8 +403,10 @@ health_summary() {
 update_os
 install_node
 fetch_code
+generate_env_file
 install_dependencies
 build_app
+install_node_service
 install_httpd
 fix_permissions_for_apache
 restart_httpd
