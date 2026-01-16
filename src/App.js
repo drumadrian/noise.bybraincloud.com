@@ -1,6 +1,7 @@
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Remove from "./pages/Remove";
+import Diagram from "./pages/Diagram";
 import "./App.css";
 
 function FloatingRemoveNoiseLink() {
@@ -26,6 +27,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/remove" element={<Remove />} />
+        <Route path="/diagram" element={<Diagram />} />
       </Routes>
     </div>
   );

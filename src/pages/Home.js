@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 const MAX_CHARS = 1000;
 
@@ -143,9 +144,17 @@ export default function Home() {
 
                     {/* Right column: intentionally minimal/blank area for your future visuals */}
                     <div className="card blueprintStub" aria-label="Reserved space for diagrams or system overview">
-                        <div className="blueprintTitle">System view</div>
-                        <div className="blueprintHint">
-                            Reserved for your diagram or retrieval pipeline visualization.
+                        <div className="blueprintTitle">
+                            <Link to="/diagram" className="link" style={{ color: 'inherit' }}>Cloud Diagram</Link>
+                        </div>
+                        <div className="blueprintContent">
+                            <Link to="/diagram" title="View Full Diagram">
+                                <img
+                                    src="/awsdiagram.png"
+                                    alt="System Architecture Diagram"
+                                    className="blueprintImg"
+                                />
+                            </Link>
                         </div>
                     </div>
                 </div>
