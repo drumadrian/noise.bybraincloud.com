@@ -60,6 +60,34 @@ fetch_code() {
     fi
 }
 
+generate_env_file() {
+    log_status "Generating .env file"
+    
+    # We use the known defaults set up by this script
+    cat > "$SERVER_DIR/.env" <<EOF
+API_PORT=3001
+NODE_ENV=production
+
+# Postgres (Credentials from create-database-noise.sh / install_postgres)
+PG_USER=wikijs
+PG_HOST=localhost
+PG_DATABASE=noise
+PG_PASSWORD=wikijsrocks
+PG_PORT=5432
+
+# Neo4j (Default credential)
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=password
+
+# OpenSearch
+OPENSEARCH_NODE=http://localhost:9200
+EOF
+    
+    # Set permissions
+    chmod 600 "$SERVER_DIR/.env"
+}
+
 install_dependencies() {
     log_status "Installing Node Dependencies"
     cd "$SERVER_DIR"
@@ -375,6 +403,7 @@ health_summary() {
 update_os
 install_node
 fetch_code
+generate_env_file
 install_dependencies
 build_app
 install_node_service

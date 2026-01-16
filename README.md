@@ -86,11 +86,15 @@ Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
 `git clone https://github.com/drumadrian/noise.bybraincloud.com.git`
 `cd noise.bybraincloud.com`
 
+
 2. Install dependencies:
 `npm install`
 
-3. Run the server:
-`npm start`
+3. Set up environment variables:
+`cp .env.example .env`
+
+4. Run the server:
+`npm run dev`
 
 
 
