@@ -2,6 +2,17 @@
 investigates Graph Retrieval-Augmented Generation for Large Language Models
 
 
+
+
+## Architecture Diagram from Cloudcraft:
+
+
+
+
+![diagram.png](diagram.png)
+
+
+Created with help from 🤖 [Google Antigravity](https://antigravity.google/)
 ![Antigravity](antigravity.png)
 
 Note: AI enhanced the deployment of this site 🤖
@@ -9,7 +20,7 @@ Note: AI enhanced the deployment of this site 🤖
 
 
 
-Visit here:  ![noise.bybraincloud.com](https://noise.bybraincloud.com)
+Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
 
 
 
@@ -21,7 +32,19 @@ Visit here:  ![noise.bybraincloud.com](https://noise.bybraincloud.com)
 ![screenshot.png](screenshot.png)
 
 
-Visit here:  ![noise.bybraincloud.com](https://noise.bybraincloud.com)
+Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
+
+
+
+## Amazon EC2 Instance Type and Machine Image (AMI)
+
+
+![amiandtype.png](amiandtype.png)
+
+
+amiandtype.png
+
+
 
 
 
@@ -34,12 +57,6 @@ Visit here:  ![noise.bybraincloud.com](https://noise.bybraincloud.com)
 
 
 
-## Architecture Diagram from Cloudcraft:
-
-
-
-
-![diagram.png](diagram.png)
 
 
 
