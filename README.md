@@ -68,9 +68,6 @@ Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
 ![amiandtype.png](amiandtype.png)
 
 
-amiandtype.png
-
-
 
 
 
@@ -114,10 +111,28 @@ Install the full stack:
 `./deploy.sh`
 
 
+---
+
+# 🎥 Comparing Search Methods: OpenSearch, Weaviate, and Neo4j for Low-Noise RAG 🎥
+
+## Welcome Video
+[![Project Overview](https://img.youtube.com/vi/faSx8Qbn7VA/0.jpg)](https://www.youtube.com/watch?v=faSx8Qbn7VA)
+
+
+---
 
 
 
+## 📄 Thesis & Dissertation Text *(structured, not written)*
 
+```markdown
+## 📄 Full Thesis & Dissertation
+
+The structured thesis and dissertation content lives here:
+
+➡️ [thesisREADME.md](./thesisREADME.md)
+
+```
 
 
 
