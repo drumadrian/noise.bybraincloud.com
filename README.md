@@ -77,9 +77,8 @@ db: noise
 
 
 
-Install the full stack:  
+Install the full stack(copy the deploy.sh file to the EC2 instance and run it):  
 `./deploy.sh`
-
 
 
 
