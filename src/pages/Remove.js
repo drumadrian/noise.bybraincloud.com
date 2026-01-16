@@ -247,12 +247,22 @@ export default function Remove() {
                     <a className="link" href="https://noise.bybraincloud.com:5601" target="_blank" rel="noreferrer">
                         Opensearch Dashboard
                     </a>
-                    <a className="link" href="#" onClick={(e) => e.preventDefault()}>
+
+                    <button
+                        className="linkBtn"
+                        type="button"
+                        onClick={() => alert("Neo4j Dashboard URL not set yet.")}
+                    >
                         Neo4j Dashboard
-                    </a>
-                    <a className="link" href="#" onClick={(e) => e.preventDefault()}>
+                    </button>
+
+                    <button
+                        className="linkBtn"
+                        type="button"
+                        onClick={() => alert("Weaviate Dashboard URL not set yet.")}
+                    >
                         Weaviate Dashboard
-                    </a>
+                    </button>
                 </div>
 
                 <div className="actionsBottom">

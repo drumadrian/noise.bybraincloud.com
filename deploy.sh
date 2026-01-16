@@ -72,6 +72,34 @@ build_app() {
     npm run build
 }
 
+
+install_node_service() {
+    log_status "Installing Node.js Backend Service"
+    
+    # Create systemd service for the node app
+    sudo tee /etc/systemd/system/noise-backend.service > /dev/null <<EOF
+[Unit]
+Description=Noise Backend Server
+After=network.target postgresql.service opensearch.service
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=$SERVER_DIR
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+Environment=PORT=3001
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable noise-backend
+    sudo systemctl restart noise-backend
+}
+
 install_httpd() {
     log_status "Installing and Configuring httpd"
     sudo dnf install -y httpd
@@ -89,6 +117,14 @@ install_httpd() {
 <VirtualHost *:80>
     ServerAdmin webmaster@noise.bybraincloud.com
     DocumentRoot $BUILD_DIR
+
+    ProxyRequests Off
+    ProxyPreserveHost On
+    
+    <Location /api>
+        ProxyPass http://localhost:3001/api
+        ProxyPassReverse http://localhost:3001/api
+    </Location>
 
     <Directory "$BUILD_DIR">
         Options Indexes FollowSymLinks
@@ -341,6 +377,7 @@ install_node
 fetch_code
 install_dependencies
 build_app
+install_node_service
 install_httpd
 fix_permissions_for_apache
 restart_httpd

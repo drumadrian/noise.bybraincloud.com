@@ -69,11 +69,30 @@ export default function Home() {
         setQuery(next);
     }
 
-    function onSearch() {
-        // This button is wired for your future fetch/search call.
-        // For now, it simply persists query; results are expected to be stored in localStorage by your search logic.
+    async function onSearch() {
+        if (!query.trim()) return;
         localStorage.setItem(LS.query, query);
-        // Optional: window.alert("Search hooked up later. Query saved locally.");
+
+        try {
+            // Parallel fetch for speed
+            const [semRes, vecRes, graphRes] = await Promise.all([
+                fetch(`/api/search/semantic?q=${encodeURIComponent(query)}`).then(r => r.json()),
+                fetch(`/api/search/vector?q=${encodeURIComponent(query)}`).then(r => r.json()),
+                fetch(`/api/search/graph?q=${encodeURIComponent(query)}`).then(r => r.json())
+            ]);
+
+            // Store in localStorage
+            localStorage.setItem(LS.semantic, JSON.stringify(semRes));
+            localStorage.setItem(LS.vector, JSON.stringify(vecRes));
+            localStorage.setItem(LS.graph, JSON.stringify(graphRes));
+
+            // Force a reload or update state to reflect results immediately (simple reload for now as per "simple" requirements)
+            window.location.reload();
+
+        } catch (error) {
+            console.error("Search failed:", error);
+            alert("Search failed. Ensure the backend server is running.");
+        }
     }
 
     return (

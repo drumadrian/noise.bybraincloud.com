@@ -426,3 +426,18 @@ body {
   gap: 8px;
   margin-top: 16px;
 }
+
+
+.linkBtn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  text-decoration: none;
+}
+
+.linkBtn:hover {
+  text-decoration: underline;
+}
