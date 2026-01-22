@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const MAX_CHARS = 1000;
 
@@ -38,6 +38,8 @@ function CollapsibleResult({ title, collapsedByDefault = true, value }) {
 }
 
 export default function Home() {
+    const navigate = useNavigate();
+
     const [query, setQuery] = useState(() => localStorage.getItem(LS.query) || "");
 
     // Preload whatever the browser already has stored
@@ -108,6 +110,19 @@ export default function Home() {
 
             {/* TOP SECTION */}
             <section className="section">
+
+
+                <div className="dividerStrong" />
+
+                <div style={{ display: "flex", justifyContent: "center", padding: "10px 0" }}>
+                    <button className="primaryBtn" onClick={() => navigate("/chat")}>
+                        chat
+                    </button>
+                </div>
+
+                <div className="dividerStrong" />
+
+
                 <div className="sectionHeader">
                     <div className="sectionTitle">Foundations</div>
                 </div>
@@ -205,6 +220,15 @@ export default function Home() {
                     <CollapsibleResult title="Vector" collapsedByDefault={true} value={vectorText} />
                     <CollapsibleResult title="Graph" collapsedByDefault={true} value={graphText} />
                 </div>
+
+                <div className="dividerStrong" />
+
+                <div style={{ display: "flex", justifyContent: "center", padding: "10px 0" }}>
+                    <button className="primaryBtn" onClick={() => navigate("/chat")}>
+                        chat
+                    </button>
+                </div>
+
             </section>
         </main>
     );

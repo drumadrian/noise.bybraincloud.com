@@ -5,109 +5,94 @@ const { Pool } = require('pg');
 const neo4j = require('neo4j-driver');
 const { Client } = require('@opensearch-project/opensearch');
 const path = require('path');
+const { Readable } = require('stream');
 
 const app = express();
 const PORT = process.env.API_PORT || 3001;
+const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'http://localhost:11434';
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Database Connections (Mock/Placeholder for now, configured via env vars)
-// Postgres
-const pgPool = new Pool({
-    user: process.env.PG_USER || 'wikijs',
-    host: process.env.PG_HOST || 'localhost',
-    database: process.env.PG_DATABASE || 'noise',
-    password: process.env.PG_PASSWORD || 'wikijsrocks',
-    port: process.env.PG_PORT || 5432,
-});
+// --- Ollama Proxy Endpoints (for LAN/mobile-safe access) ---
 
-// Neo4j
-const neo4jDriver = neo4j.driver(
-    process.env.NEO4J_URI || 'bolt://localhost:7687',
-    neo4j.auth.basic(
-        process.env.NEO4J_USER || 'neo4j',
-        process.env.NEO4J_PASSWORD || 'password' // Change this!
-    )
-);
-
-// OpenSearch
-const osClient = new Client({
-    node: process.env.OPENSEARCH_NODE || 'http://localhost:9200',
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
-
-
-// --- Search Endpoints ---
-
-// 1. Semantic Search (OpenSearch or PGVector)
-app.get('/api/search/semantic', async (req, res) => {
-    const query = req.query.q;
-    if (!query) return res.status(400).json({ error: "Missing query parameter 'q'" });
-
-    console.log(`[Semantic] Searching for: ${query}`);
-
+// GET /api/ollama/tags -> http://localhost:11434/api/tags
+app.get('/api/ollama/tags', async (req, res) => {
     try {
-        // Placeholder: Replace with actual OpenSearch query
-        // const result = await osClient.search({...});
+        const controller = new AbortController();
+        req.on('close', () => controller.abort());
 
-        // Mock Response
-        const mockResults = [
-            `Semantic Result 1 for "${query}": Advanced Retrieval Augmented Generation (RAG) reduces hallucination.`,
-            `Semantic Result 2 for "${query}": Vector databases store embeddings for similarity search.`,
-            `Semantic Result 3 for "${query}": Noise in RAG systems can lead to irrelevant context being passed to the LLM.`
-        ];
+        const upstream = await fetch(`${OLLAMA_BASE_URL}/api/tags`, { signal: controller.signal });
 
-        res.json(mockResults);
-    } catch (error) {
-        console.error("Semantic search error:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+        const text = await upstream.text();
+
+        if (!upstream.ok) {
+            return res.status(upstream.status).send(text);
+        }
+
+        // Ollama returns JSON
+        res.setHeader('Content-Type', 'application/json');
+        return res.send(text);
+    } catch (err) {
+        console.error('Ollama /tags proxy error:', err);
+        return res.status(502).json({ error: 'Failed to reach Ollama. Is it running?' });
     }
 });
 
-// 2. Vector Search (Weaviate or OpenSearch k-NN)
-app.get('/api/search/vector', async (req, res) => {
-    const query = req.query.q;
-    if (!query) return res.status(400).json({ error: "Missing query parameter 'q'" });
-
-    console.log(`[Vector] Searching for: ${query}`);
-
+// POST /api/ollama/chat -> http://localhost:11434/api/chat (streaming passthrough)
+app.post('/api/ollama/chat', async (req, res) => {
     try {
-        // Placeholder for Vector DB query
-        const mockResults = [
-            `Vector Result A: High dimensional distance: 0.12`,
-            `Vector Result B: High dimensional distance: 0.15`,
-            `Vector Result C: High dimensional distance: 0.22`
-        ];
-        res.json(mockResults);
-    } catch (error) {
-        console.error("Vector search error:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+
+        const controller = new AbortController();
+        req.on('close', () => controller.abort());
+
+        const upstream = await fetch(`${OLLAMA_BASE_URL}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(req.body || {}),
+            signal: controller.signal,
+
+        });
+
+        // Pass through status
+        res.status(upstream.status);
+
+        // Pass through content-type (Ollama streaming is usually NDJSON)
+        const ct = upstream.headers.get('content-type');
+        if (ct) res.setHeader('Content-Type', ct);
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+        res.flushHeaders?.();
+
+        // If Ollama returned an error body, forward it
+        if (!upstream.ok) {
+            const errText = await upstream.text();
+            return res.send(errText);
+        }
+
+        // No body means nothing to stream
+        if (!upstream.body) {
+            return res.end();
+        }
+
+        // Streaming passthrough (ReadableStream -> Node stream)
+        const nodeStream = Readable.fromWeb(upstream.body);
+        nodeStream.on('error', (e) => {
+            console.error('Ollama stream error:', e);
+            try { res.end(); } catch { }
+        });
+
+        // If client disconnects, stop reading
+        req.on('close', () => { try { nodeStream.destroy(); } catch { } });
+
+        return nodeStream.pipe(res);
+    } catch (err) {
+        console.error('Ollama /chat proxy error:', err);
+        return res.status(502).json({ error: 'Failed to reach Ollama. Is it running?' });
     }
 });
 
-// 3. Graph Search (Neo4j)
-app.get('/api/search/graph', async (req, res) => {
-    const query = req.query.q;
-    if (!query) return res.status(400).json({ error: "Missing query parameter 'q'" });
-
-    console.log(`[Graph] Searching for: ${query}`);
-
-    try {
-        // Placeholder for Neo4j Cypher query
-        const mockResults = [
-            `Graph Path: (Query)-[:RELATED_TO]->(Concept A)-[:IMPLIES]->(Result)`,
-            `Graph Path: (Query)-[:SYNONYM_OF]->(Term B)-[:USED_IN]->(Context C)`
-        ];
-        res.json(mockResults);
-    } catch (error) {
-        console.error("Graph search error:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
 
 // Serve React Static Files (Production)
 // If we want Node to serve the app instead of Apache
