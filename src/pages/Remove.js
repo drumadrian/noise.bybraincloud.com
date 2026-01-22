@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LS = {
     semantic: "noise.results.semantic", // JSON array of strings
@@ -31,6 +32,11 @@ function tokenize(text) {
 }
 
 export default function Remove() {
+
+    // ---- State ----
+    const navigate = useNavigate();
+    const [busy, setBusy] = useState(false);
+
     const semanticResults = useMemo(
         () => safeParseArray(localStorage.getItem(LS.semantic) || "[]"),
         []
@@ -274,6 +280,37 @@ export default function Remove() {
                     </div>
                 </div>
             </section>
+
+            <div
+                style={{
+                    position: "fixed",
+                    right: 22,
+                    bottom: 22,
+                    display: "flex",
+                    gap: 10,
+                    zIndex: 9999,
+                }}
+            >
+                <button
+                    className="secondaryBtn"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => navigate("/")}
+                >
+                    back home
+                </button>
+
+                <button
+                    className="secondaryBtn"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => navigate("/remove")}
+                >
+                    remove noise
+                </button>
+            </div>
+
+
         </main>
     );
 }

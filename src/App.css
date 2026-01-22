@@ -210,6 +210,28 @@ body {
   background: rgba(122, 162, 214, 0.26);
 }
 
+.secondaryBtn {
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: rgba(12, 18, 32, 0.7);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 800;
+  text-transform: lowercase;
+  backdrop-filter: blur(8px);
+}
+
+.secondaryBtn:hover {
+  border-color: rgba(122, 162, 214, 0.55);
+  background: rgba(12, 18, 32, 0.82);
+}
+
+.secondaryBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .dangerBtn {
   background: rgba(214, 122, 122, 0.16);
 }
@@ -279,25 +301,6 @@ body {
 
 .small {
   font-size: 12px;
-}
-
-.removeNoiseLink {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  padding: 10px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: rgba(12, 18, 32, 0.7);
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 800;
-  text-transform: lowercase;
-  backdrop-filter: blur(8px);
-}
-
-.removeNoiseLink:hover {
-  border-color: rgba(122, 162, 214, 0.55);
 }
 
 .resultMeta {

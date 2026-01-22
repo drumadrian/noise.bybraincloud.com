@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Display-only label so we can see where Ollama lives.
 // Actual calls go through /api/ollama/* (server proxy).
@@ -29,7 +30,7 @@ function clampText(s, max = 8000) {
 }
 
 export default function Chat() {
-
+    const navigate = useNavigate();
 
     // ---- State ----
     const [includeRag, setIncludeRag] = useState(true);
@@ -477,13 +478,25 @@ export default function Chat() {
                     zIndex: 9999,
                 }}
             >
-                <a className="secondaryBtn" href="/">
+                <button
+                    className="secondaryBtn"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => navigate("/")}
+                >
                     back home
-                </a>
-                <a className="secondaryBtn" href="/remove">
+                </button>
+
+                <button
+                    className="secondaryBtn"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => navigate("/remove")}
+                >
                     remove noise
-                </a>
+                </button>
             </div>
+
 
         </main>
     );
