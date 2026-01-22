@@ -8,3 +8,4 @@ weaviate-data/
 *.log
 weaviate.zip
 weaviate.tar.gz
+scratch_notes.md

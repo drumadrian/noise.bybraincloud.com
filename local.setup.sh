@@ -76,6 +76,15 @@ else
     log_info "OpenSearch Dashboards already installed."
 fi
 
+# Fix for missing PID directory on some brew installs
+if [ -d "/opt/homebrew/var" ] && [ ! -d "/opt/homebrew/var/run" ]; then
+    log_info "Creating missing PID directory /opt/homebrew/var/run..."
+    mkdir -p /opt/homebrew/var/run
+elif [ -d "/usr/local/var" ] && [ ! -d "/usr/local/var/run" ]; then
+    log_info "Creating missing PID directory /usr/local/var/run..."
+    mkdir -p /usr/local/var/run
+fi
+
 # Start Services (Restart if needed to ensure config)
 log_info "Starting OpenSearch services..."
 brew services list | grep opensearch | grep started || brew services start opensearch
