@@ -173,9 +173,7 @@ export default function Chat() {
 
         const userMsg = { id: nowId(), role: "user", content: prompt, ts: Date.now() };
 
-        // Build nextMessages synchronously so outgoing history is consistent
-        const nextMessages = [...messages, userMsg];
-        setMessages(nextMessages);
+        setMessages((prev) => [...prev, userMsg]);
 
         // Build context if toggle on
         let rag = { contextText: "", sources: [] };
@@ -198,12 +196,14 @@ export default function Chat() {
             "You are a helpful assistant. Use CONTEXT when it is relevant. " +
             "If CONTEXT is irrelevant, ignore it. Keep responses concise unless asked for detail.";
 
+        const history = messages.slice(-12).map((m) => ({ role: m.role, content: m.content }));
+
         const outgoing = [
             { role: "system", content: system },
-            // Include recent history for continuity (last ~12 msgs) — now includes the new user msg
-            ...nextMessages.slice(-12).map((m) => ({ role: m.role, content: m.content })),
+            ...history,
             { role: "user", content: prompt + contextBlock + attachmentBlock },
         ];
+
 
         const assistantId = nowId();
         setMessages((prev) => [
