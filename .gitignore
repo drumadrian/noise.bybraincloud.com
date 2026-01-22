@@ -1,3 +1,11 @@
 .DS_Store
 node_modules
 .env
+
+# Local Development Generated Files
+bin/
+weaviate-data/
+*.log
+weaviate.zip
+weaviate.tar.gz
+scratch_notes.md
