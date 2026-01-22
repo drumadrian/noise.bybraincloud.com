@@ -88,13 +88,12 @@ Visit here:  [noise.bybraincloud.com](https://noise.bybraincloud.com)
 `cd noise.bybraincloud.com`
 
 
-2. Install dependencies:
-`npm install`
+2. Run the automated setup script:
+`./local.setup.sh`
 
-3. Set up environment variables:
-`cp .env.example .env`
+For detailed instructions and verification steps, please see [walkthrough.md](./walkthrough.md).
 
-4. Run the server:
+3. Run the server:
 `npm run dev`
 
 
